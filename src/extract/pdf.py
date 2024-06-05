@@ -11,14 +11,25 @@ from hoa_property import logger
 
 @dataclass()
 class PDFFile:
+    """
+    Represents a single pdf file.
+    """
+
     filepath: str
 
 
 @dataclass()
 class PDFDirectory:
+    """
+    Collect pdf files from a filepath or a directory.
+    """
+
     path: str
 
     def get_pdf_files(self) -> list[PDFFile]:
+        """
+        Collect pdf files from a filepath or a directory.
+        """
         pdf_files = []
         try:
             p = Path(self.path)
