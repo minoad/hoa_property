@@ -2,7 +2,20 @@
 
 Extract data relevant for HOA property.
 
+## TODO
+
+Tickets
+
+- Download data from the internet.
+- OCR data from image files (jpeg, png, bmp)
+
+Working
+
+- Extract data from pdf documents.
+
 ## Summary
+
+### Modules
 
 Precommit must pass before commits will run.
 
@@ -11,6 +24,12 @@ Precommit must pass before commits will run.
 - `ocr`: this module deals with running ocr processes on files.
 
 `load_hoa_config` -> `extract_hoa_data` -> `ocr_extracted_data` -> `store`
+
+### Data
+
+Most data is not pushed to the repo due to size.
+
+`data/test/` files are data files to use for testing that is under 500kb.
 
 ## Directory
 
