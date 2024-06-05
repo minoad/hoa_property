@@ -1,0 +1,24 @@
+#!./venv/bin/python
+
+"""
+Module Docstring
+"""
+import sys
+
+from hoa_property import config, logger
+
+
+def main() -> int:
+    """
+    main thread
+
+    Returns:
+        0 int if good.  int > 0 if some error.
+    """
+    logger.debug("begin run")
+    logger.debug(config)
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
