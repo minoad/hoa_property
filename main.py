@@ -17,6 +17,7 @@ def main() -> int:
     """
     logger.debug("begin run")
     logger.debug(config)
+    print("testing")
     return 0
 
 
