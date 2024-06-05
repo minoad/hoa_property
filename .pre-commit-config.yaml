@@ -23,3 +23,19 @@ repos:
   rev: main
   hooks:
   - id: black
+- repo: https://github.com/PyCQA/pylint
+  rev: main
+  hooks:
+  - id: pylint
+- repo: https://github.com/pre-commit/mirrors-mypy
+  rev: main
+  hooks:
+  - id: mypy
+- repo: https://github.com/pre-commit/mirrors-isort
+  rev: main
+  hooks:
+  - id: isort
+- repo: https://github.com/PyCQA/bandit
+  rev: main
+  hooks:
+  - id: bandit
