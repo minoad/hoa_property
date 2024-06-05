@@ -4,6 +4,8 @@ Extract data relevant for HOA property.
 
 ## Summary
 
+Precommit must pass before commits will run.
+
 - `hoa_property`: is the project module.  This will contain config, logging and any other project centric data.
 - `extract`: this module deals with extracting data from files.  These can be text, image, binary or any other sort of data.
 - `ocr`: this module deals with running ocr processes on files.
