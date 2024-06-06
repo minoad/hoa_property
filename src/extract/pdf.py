@@ -6,6 +6,7 @@ Given a pdf or directory containing pdf's:
 from dataclasses import dataclass
 from pathlib import Path
 
+from extract.handler import handle_file_exceptions
 from hoa_property import logger
 
 
@@ -74,9 +75,8 @@ class PDFDirectory:
                 pdf_files = [PDFFile(filepath=str(object=p))]
                 return pdf_files
             logger.error("The path %s is neither a directory nor a PDF file.", self.path)
-        except FileNotFoundError as e:
-            logger.error("An error occurred while retrieving PDF files: %s", e)
-            raise e
+        except OSError as e:
+            handle_file_exceptions(e, self.path)
 
         raise PDFDirectoryGeneralException(f"An error occurred while retrieving PDF files fro {self.path}.")
 
