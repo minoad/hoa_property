@@ -49,7 +49,6 @@ class PDFFile:
             self.metadata = {}
 
         self.pages = list(doc)  # type: ignore
-        print("a")
 
     def __post_init__(self):
         self.get_pdf_file_data()
@@ -92,6 +91,9 @@ class PDFDirectory:
         pdf_files: list[PDFFile] = []  # Make mypy stop complaining
         try:
             p = Path(self.path)
+            if not p.exists():
+                logger.error("The path %s does not exist.", self.path)
+                raise FileNotFoundError(f"The path {self.path} does not exist.")
             if p.is_dir():
                 pdf_files = [PDFFile(path=str(file)) for file in p.iterdir() if file.suffix.lower() == ".pdf"]
                 logger.debug("checking path: %s, found %s", self.path, pdf_files)
@@ -99,11 +101,12 @@ class PDFDirectory:
             if p.is_file() and p.suffix.lower() == ".pdf":
                 pdf_files = [PDFFile(path=str(object=p))]
                 return pdf_files
-            logger.error("The path %s is neither a directory nor a PDF file.", self.path)
+            logger.error("The path %s exists, but is neither a directory nor a PDF file.", self.path)
+            raise PDFDirectoryGeneralException(
+                f"The path {self.path} exists, but is neither a directory nor a PDF file."
+            )
         except OSError as e:
             handle_file_exceptions(e, self.path)
-
-        raise PDFDirectoryGeneralException(f"An error occurred while retrieving PDF files fro {self.path}.")
 
     def __post_init__(self):
 

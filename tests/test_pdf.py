@@ -1,15 +1,16 @@
 from typing import Any
 
+import pymupdf
 import pytest
 
-from extract.pdf import PDFDirectory, PDFDirectoryGeneralException
+from extract.pdf import PDFDirectory, PDFFile
 from hoa_property import logger
 
 test_cases: dict[str, dict[str, Any]] = {
     "invalid_path": {
         "function": lambda: PDFDirectory(path="invalid/path").path,
         "expected": None,
-        "expected_exception": PDFDirectoryGeneralException,
+        "expected_exception": FileNotFoundError,
     },
     "multi_pdfs_in_path": {
         "function": lambda: PDFDirectory(path="data/test/plats").path,
@@ -23,6 +24,11 @@ test_cases: dict[str, dict[str, Any]] = {
         "function": lambda: (
             bool(PDFDirectory(path="data/test/plats/Cap Rock 1 Recorded Plat.pdf").pdf_files[0].metadata)
         ),
+        "expected": True,
+    },
+    "pdf_file_does_not_exist": {
+        "function": lambda: PDFFile(path="invalid/path"),
+        "expected_exception": pymupdf.FileNotFoundError,
         "expected": True,
     },
 }
