@@ -26,23 +26,25 @@ class PDFDirectory:
 
     path: str
 
-    def get_pdf_files(self) -> list[PDFFile]:
+    def get_pdf_files(self) -> list[PDFFile] | None:
         """
         Collect pdf files from a filepath or a directory.
         """
-        pdf_files = []
+        pdf_files: list[PDFFile] = []  # Make mypy stop complaining
         try:
             p = Path(self.path)
             if p.is_dir():
-                pdf_files = [PDFFile(str(file)) for file in p.iterdir() if file.suffix.lower() == ".pdf"]
-            elif p.is_file() and p.suffix.lower() == ".pdf":
-                pdf_files = [PDFFile(str(p))]
-            else:
-                logger.error("The path %s is neither a directory nor a PDF file.", self.path)
+                pdf_files = [
+                    PDFFile(filepath=str(object=file)) for file in p.iterdir() if file.suffix.lower() == ".pdf"
+                ]
+                return pdf_files
+            if p.is_file() and p.suffix.lower() == ".pdf":
+                pdf_files = [PDFFile(filepath=str(object=p))]
+                return pdf_files
+            logger.error("The path %s is neither a directory nor a PDF file.", self.path)
         except FileNotFoundError as e:
             logger.error("An error occurred while retrieving PDF files: %s", e)
-        logger.debug("PDF files found: %s", pdf_files)
-        return pdf_files
+        return None
 
     def __post_init__(self):
 
