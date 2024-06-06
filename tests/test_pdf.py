@@ -18,18 +18,18 @@ test_cases: dict[str, dict[str, Any]] = {
         "expected": None,
         "expected_to_fail": True,
     },
-    # "multi_pdfs_in_path": {
-    #     "function": PDFDirectory,
-    #     "input": {"path": "data/test/plats"},
-    #     "expected": PDFDirectory(path="data/test/plats"),
-    #     "expected_to_fail": False,
-    # },
-    # "single_pdfs_in_path": {
-    #     "function": PDFDirectory,
-    #     "input": {"path": "data/test/plats/Cap Rock 1 Recorded Plat.pdf"},
-    #     "expected": PDFDirectory(path="data/test/plats/Cap Rock 1 Recorded Plat.pdf"),
-    #     "expected_to_fail": False,
-    # },
+    "multi_pdfs_in_path": {
+        "function": PDFDirectory,
+        "input": {"path": "data/test/plats"},
+        "expected": PDFDirectory(path="data/test/plats"),
+        "expected_to_fail": False,
+    },
+    "single_pdfs_in_path": {
+        "function": PDFDirectory,
+        "input": {"path": "data/test/plats/Cap Rock 1 Recorded Plat.pdf"},
+        "expected": PDFDirectory(path="data/test/plats/Cap Rock 1 Recorded Plat.pdf"),
+        "expected_to_fail": False,
+    },
 }
 
 
