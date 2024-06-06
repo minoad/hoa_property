@@ -5,29 +5,28 @@ import pytest
 from extract.pdf import PDFDirectory
 from hoa_property import logger
 
-TEST_PDF_PATH = "data/test/plats"
-
-
-pdf_files = PDFDirectory(TEST_PDF_PATH)
-
-
 test_cases: dict[str, dict[str, Any]] = {
     "invalid_path": {
-        "function": PDFDirectory,
-        "input": {"path": "invalid/path"},
+        "function": lambda: PDFDirectory(path="invalid/path").path,
         "expected": None,
         "expected_to_fail": True,
     },
     "multi_pdfs_in_path": {
-        "function": PDFDirectory,
-        "input": {"path": "data/test/plats"},
-        "expected": PDFDirectory(path="data/test/plats"),
+        "function": lambda: PDFDirectory(path="data/test/plats").path,
+        "expected": "data/test/plats",
         "expected_to_fail": False,
     },
     "single_pdfs_in_path": {
-        "function": PDFDirectory,
-        "input": {"path": "data/test/plats/Cap Rock 1 Recorded Plat.pdf"},
-        "expected": PDFDirectory(path="data/test/plats/Cap Rock 1 Recorded Plat.pdf"),
+        "function": lambda: PDFDirectory(path="data/test/plats/Cap Rock 1 Recorded Plat.pdf").path,
+        # "input": {"path": "data/test/plats/Cap Rock 1 Recorded Plat.pdf"},
+        "expected": "data/test/plats/Cap Rock 1 Recorded Plat.pdf",
+        "expected_to_fail": False,
+    },
+    "pdf_file_has_metadata_and_pages": {
+        "function": lambda: (
+            bool(PDFDirectory(path="data/test/plats/Cap Rock 1 Recorded Plat.pdf").pdf_files[0].metadata)
+        ),
+        "expected": True,  # result.pdf_files[0].metadata
         "expected_to_fail": False,
     },
 }
@@ -58,18 +57,22 @@ def test_pdfs(name, case):
         AssertionError: If the function does not return the expected result.
     """
     func = case["function"]
-    inputs = case["input"]
+    # inputs = case["input"]
 
     # Handle cases where input might be missing or incorrect
     if case["expected_to_fail"]:
         with pytest.raises(Exception):
-            result = func(**inputs)
+            result = func()
     else:
-        result = func(**inputs)
+        # result = func(**inputs)
+        result = func()
+        logger.debug("%s == %s", result, case["expected"])
         assert result == case["expected"], f"Test {name} failed: expected {case['expected']} but got {result}"
 
+        # Execute custom checks if provided in the test case
+        if "custom_check" in case:
+            case["custom_check"](result)
 
-logger.debug(pdf_files)
 
 if __name__ == "__main__":
     pytest.main()

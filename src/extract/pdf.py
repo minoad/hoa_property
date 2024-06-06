@@ -36,7 +36,7 @@ class PDFFile:
     metadata: Optional[Dict[str, Any]] = field(default_factory=dict)
     pages: Optional[List[Any]] = field(default=None)
 
-    def get_pdf_file(self):
+    def get_pdf_file_data(self):
         try:
             doc = pymupdf.open(self.path)  # type: pymupdf.Document
         except OSError as e:
@@ -52,7 +52,7 @@ class PDFFile:
         print("a")
 
     def __post_init__(self):
-        self.get_pdf_file()
+        self.get_pdf_file_data()
 
 
 class PDFDirectoryGeneralException(Exception):
@@ -74,6 +74,7 @@ class PDFDirectory:
     """
 
     path: str
+    pdf_files: List[PDFFile] = field(default_factory=list)
 
     def get_pdf_files(self) -> list[PDFFile]:
         """
@@ -106,4 +107,4 @@ class PDFDirectory:
 
     def __post_init__(self):
 
-        self.get_pdf_files()
+        self.pdf_files = self.get_pdf_files() or []
